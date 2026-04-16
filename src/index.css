@@ -2,8 +2,41 @@
 
 @import 'tailwindcss';
 
+:root {
+  --ink: #0d0d0d;
+  --paper: #f5f2ec;
+  --card: #ffffff;
+  --accent: #e85d3a;
+  --accent-2: #3a7ee8;
+  --low: #3ab87e;
+  --medium: #e8a63a;
+  --high: #e85d3a;
+  --muted: #7a7370;
+  --border: #e2ddd6;
+  --shadow: 0 2px 0 #0d0d0d;
+  --shadow-lg: 0 6px 0 #0d0d0d;
+  --radius: 14px;
+  --font-head: 'Syne', sans-serif;
+  --font-body: 'DM Sans', sans-serif;
+}
+
 * {
   font-family: 'Plus Jakarta Sans', sans-serif;
+}
+
+body {
+  min-height: 100%;
+  background: var(--paper);
+  color: var(--ink);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 2rem 1rem;
+  background-color: var(--paper);
+  background-image: radial-gradient(circle, #0d0d0d18 1px, transparent 1px);
+  background-size: 22px 22px;
 }
 
 @layer base {
@@ -23,4 +56,356 @@
 ::-webkit-scrollbar-thumb {
   background: #425b7e;
   border-radius: 9px;
+}
+
+/* ── Page header ────────────────────────────────── */
+.page-header {
+  text-align: center;
+  margin-bottom: 2.5rem;
+}
+.page-header h1 {
+  font-family: var(--font-head);
+  font-size: clamp(1.6rem, 4vw, 2.4rem);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+}
+.page-header h1 span {
+  color: var(--accent);
+}
+.page-header p {
+  color: var(--muted);
+  font-size: 0.9rem;
+  margin-top: 0.4rem;
+  font-weight: 300;
+}
+
+/* ── Card ───────────────────────────────────────── */
+article[data-testid='test-todo-card'] {
+  background: var(--card);
+  border: 2px solid var(--ink);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-lg);
+  width: 100%;
+  max-width: 480px;
+  padding: 1.75rem;
+  position: relative;
+  transition:
+    box-shadow 0.18s ease,
+    transform 0.18s ease;
+}
+
+article[data-testid='test-todo-card']:hover {
+  box-shadow: 0 8px 0 #0d0d0d;
+  transform: translateY(-2px);
+}
+
+article[data-testid='test-todo-card'].is-done {
+  background: #f9f9f7;
+  opacity: 0.82;
+}
+
+/* ── Top strip: priority + status ──────────────── */
+.card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.1rem;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+/* Priority badge */
+[data-testid='test-todo-priority'] {
+  font-family: var(--font-head);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 0.3rem 0.75rem;
+  border-radius: 999px;
+  border: 1.5px solid var(--ink);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+[data-testid='test-todo-priority'].priority-low {
+  background: #d4f5e5;
+  color: #1a7a4d;
+}
+[data-testid='test-todo-priority'].priority-medium {
+  background: #fef3d4;
+  color: #9a6400;
+}
+[data-testid='test-todo-priority'].priority-high {
+  background: #fde8e2;
+  color: #b53317;
+}
+
+/* Status badge */
+[data-testid='test-todo-status'] {
+  font-family: var(--font-head);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 0.3rem 0.75rem;
+  border-radius: 6px;
+  border: 1.5px solid var(--ink);
+  background: var(--ink);
+  color: var(--paper);
+}
+[data-testid='test-todo-status'].status-done {
+  background: var(--low);
+  border-color: var(--low);
+  color: #fff;
+}
+
+/* ── Checkbox + title row ────────────────────────── */
+.title-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.85rem;
+  margin-bottom: 0.75rem;
+}
+
+/* Custom checkbox */
+.checkbox-wrapper {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  margin-top: 0.25rem;
+}
+.checkbox-wrapper input[type='checkbox'] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 22px;
+  height: 22px;
+  border: 2px solid var(--ink);
+  border-radius: 6px;
+  cursor: pointer;
+  background: var(--paper);
+  position: relative;
+  flex-shrink: 0;
+  transition:
+    background 0.15s,
+    border-color 0.15s;
+}
+.checkbox-wrapper input[type='checkbox']:checked {
+  background: var(--ink);
+  border-color: var(--ink);
+}
+.checkbox-wrapper input[type='checkbox']:checked::after {
+  content: '';
+  position: absolute;
+  top: 3px;
+  left: 6px;
+  width: 6px;
+  height: 11px;
+  border: 2.5px solid #fff;
+  border-top: none;
+  border-left: none;
+  transform: rotate(45deg);
+}
+.checkbox-wrapper input[type='checkbox']:focus-visible {
+  outline: 3px solid var(--accent-2);
+  outline-offset: 2px;
+}
+.checkbox-wrapper label {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+/* Title */
+[data-testid='test-todo-title'] {
+  font-family: var(--font-head);
+  font-size: clamp(1rem, 2.5vw, 1.2rem);
+  font-weight: 700;
+  line-height: 1.25;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  transition:
+    text-decoration 0.15s,
+    color 0.15s;
+}
+.is-done [data-testid='test-todo-title'] {
+  text-decoration: line-through;
+  color: var(--muted);
+}
+
+/* ── Description ────────────────────────────────── */
+[data-testid='test-todo-description'] {
+  font-size: 0.9rem;
+  color: var(--muted);
+  line-height: 1.6;
+  font-weight: 300;
+  margin-bottom: 1.25rem;
+}
+
+/* ── Divider ────────────────────────────────────── */
+.divider {
+  height: 1px;
+  background: var(--border);
+  margin: 0 0 1.1rem;
+}
+
+/* ── Due date + time remaining ───────────────────── */
+.date-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1.1rem;
+}
+
+.date-label {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: 0.82rem;
+  color: var(--muted);
+  font-weight: 400;
+}
+.date-label svg {
+  flex-shrink: 0;
+}
+
+[data-testid='test-todo-due-date'] {
+  font-family: var(--font-head);
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+[data-testid='test-todo-time-remaining'] {
+  font-size: 0.8rem;
+  font-weight: 500;
+  padding: 0.25rem 0.65rem;
+  border-radius: 999px;
+  border: 1.5px solid var(--border);
+  background: var(--paper);
+  color: var(--muted);
+  font-family: var(--font-body);
+}
+[data-testid='test-todo-time-remaining'].overdue {
+  background: #fde8e2;
+  border-color: var(--high);
+  color: var(--high);
+  font-weight: 600;
+}
+[data-testid='test-todo-time-remaining'].due-soon {
+  background: #fef3d4;
+  border-color: var(--medium);
+  color: #9a6400;
+  font-weight: 600;
+}
+[data-testid='test-todo-time-remaining'].due-far {
+  background: #d4f5e5;
+  border-color: var(--low);
+  color: #1a7a4d;
+}
+
+/* ── Tags ───────────────────────────────────────── */
+[data-testid='test-todo-tags'] {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1.4rem;
+  padding: 0;
+}
+
+[data-testid='test-todo-tags'] li {
+  font-size: 0.75rem;
+  font-weight: 500;
+  padding: 0.25rem 0.7rem;
+  border-radius: 999px;
+  border: 1.5px solid var(--ink);
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-head);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+/* ── Action buttons ──────────────────────────────── */
+.card-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.6rem;
+}
+
+.card-actions button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  border: 2px solid var(--ink);
+  font-family: var(--font-head);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  transition:
+    background 0.14s,
+    transform 0.1s,
+    box-shadow 0.14s;
+  box-shadow: var(--shadow);
+}
+.card-actions button:focus-visible {
+  outline: 3px solid var(--accent-2);
+  outline-offset: 2px;
+}
+.card-actions button:active {
+  transform: translateY(2px);
+  box-shadow: none;
+}
+
+[data-testid='test-todo-edit-button'] {
+  background: var(--paper);
+  color: var(--ink);
+}
+[data-testid='test-todo-edit-button']:hover {
+  background: var(--ink);
+  color: var(--paper);
+}
+
+[data-testid='test-todo-delete-button'] {
+  background: var(--high);
+  color: #fff;
+  border-color: var(--high);
+}
+[data-testid='test-todo-delete-button']:hover {
+  background: #c94527;
+  border-color: #c94527;
+}
+
+/* ── Corner accent ───────────────────────────────── */
+.corner-dot {
+  position: absolute;
+  top: -10px;
+  right: 22px;
+  width: 20px;
+  height: 20px;
+  background: var(--accent);
+  border: 2px solid var(--ink);
+  border-radius: 50%;
+}
+
+/* ── Responsive ──────────────────────────────────── */
+@media (max-width: 480px) {
+  article[data-testid='test-todo-card'] {
+    padding: 1.4rem 1.2rem;
+  }
+  .date-row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
 }
